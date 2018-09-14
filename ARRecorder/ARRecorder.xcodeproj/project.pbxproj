@@ -14,7 +14,6 @@
 		B54F80231F01190500A2212D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B54F80221F01190500A2212D /* Assets.xcassets */; };
 		B54F80261F01190500A2212D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B54F80241F01190500A2212D /* LaunchScreen.storyboard */; };
 		B54F80301F011B6800A2212D /* SCNVector3Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54F802E1F0119DF00A2212D /* SCNVector3Extensions.swift */; };
-		B54F80311F011B7100A2212D /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54F802D1F0119DF00A2212D /* SwiftyJSON.swift */; };
 		B54F80321F011B7400A2212D /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54F802F1F0119DF00A2212D /* Utilities.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,7 +26,6 @@
 		B54F80221F01190500A2212D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B54F80251F01190500A2212D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B54F80271F01190500A2212D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B54F802D1F0119DF00A2212D /* SwiftyJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		B54F802E1F0119DF00A2212D /* SCNVector3Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNVector3Extensions.swift; sourceTree = "<group>"; };
 		B54F802F1F0119DF00A2212D /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -63,7 +61,6 @@
 			isa = PBXGroup;
 			children = (
 				B54F802E1F0119DF00A2212D /* SCNVector3Extensions.swift */,
-				B54F802D1F0119DF00A2212D /* SwiftyJSON.swift */,
 				B54F802F1F0119DF00A2212D /* Utilities.swift */,
 				B54F80191F01190500A2212D /* AppDelegate.swift */,
 				B54F801B1F01190500A2212D /* art.scnassets */,
@@ -152,7 +149,6 @@
 				B54F801E1F01190500A2212D /* ViewController.swift in Sources */,
 				B54F801A1F01190500A2212D /* AppDelegate.swift in Sources */,
 				B54F80321F011B7400A2212D /* Utilities.swift in Sources */,
-				B54F80311F011B7100A2212D /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,7 +281,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = J6G8CBSPAT;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ARRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.cmu.ARRecorder;
@@ -299,7 +295,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = J6G8CBSPAT;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ARRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.cmu.ARRecorder;
@@ -328,6 +324,7 @@
 				B54F802C1F01190500A2212D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -16,16 +16,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     @IBOutlet weak var recordButton: UIButton!
     
-    var jsonObject = [String:Any]()
-    var recordStartTime: String?
+//    var jsonObject = [String:FrameInfo]()
+//    var recordStartTime: String?
     
-    enum RecordingState {
-        case recording
-        case notRecording
-    }
+//    enum RecordingState {
+//        case recording
+//        case notRecording
+//    }
     
-    var currentState = RecordingState.notRecording
-    var previousState = RecordingState.notRecording
+//    var currentState = RecordingState.notRecording
+//    var previousState = RecordingState.notRecording
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,7 +57,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         super.viewWillAppear(animated)
         
         // Create a session configuration
-        let configuration = ARWorldTrackingSessionConfiguration()
+        let configuration = ARWorldTrackingConfiguration()
         configuration.isLightEstimationEnabled = true
         // Run the view's session
         sceneView.session.run(configuration)
@@ -83,70 +83,94 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
     }
     
-    func currentFrameInfoToDic(currentFrame: ARFrame) -> [String: Any] {
+    class ARPointCloud :Codable{
+        var count : Int!
+        var points : [[Float]]!
+        init() {
+        }
+    }
+    class FrameInfo:Codable{
+        var imageName : String!
+        var timeStamp :TimeInterval!
+        var cameraPos : [String:Float]!
+        var cameraEulerAngle :[String:Float]!
+        var cameraTransform:[[Float]]!
+        var cameraIntrinsics:[[Float]]!
+        var imageResolution:[String:CGFloat]!
+        var lightEstimate : CGFloat!
+        var ARPointCloud :ARPointCloud?
+        init() {
+        }
+    }
+    
+    func currentFrameInfoToDic(currentFrame: ARFrame) -> FrameInfo {
         
         let currentTime:String = String(format:"%f", currentFrame.timestamp)
         let imageName = currentTime + ".jpg"
-        let jsonObject: [String: Any] = [
-            "imageName": imageName,
-            "timeStamp": currentFrame.timestamp,
-            "cameraPos": dictFromVector3(positionFromTransform(currentFrame.camera.transform)),
-            "cameraEulerAngle": dictFromVector3(currentFrame.camera.eulerAngles),
-            "cameraTransform": arrayFromTransform(currentFrame.camera.transform),
-            "cameraIntrinsics": arrayFromTransform(currentFrame.camera.intrinsics),
-            "imageResolution": [
-                "width": currentFrame.camera.imageResolution.width,
-                "height": currentFrame.camera.imageResolution.height
-            ],
-            "lightEstimate": currentFrame.lightEstimate?.ambientIntensity,
-            "ARPointCloud": [
-                "count": currentFrame.rawFeaturePoints?.count,
-                "points": arrayFromPointCloud(currentFrame.rawFeaturePoints)
-            ]
+        let frameInfo = FrameInfo()
+        frameInfo.imageName = imageName
+        frameInfo.timeStamp = currentFrame.timestamp
+        frameInfo.cameraPos = dictFromVector3(positionFromTransform(currentFrame.camera.transform))
+        frameInfo.cameraEulerAngle = dictFromVector3(currentFrame.camera.eulerAngles)
+        frameInfo.cameraTransform  = arrayFromTransform(currentFrame.camera.transform)
+        frameInfo.cameraIntrinsics = arrayFromTransform(currentFrame.camera.intrinsics)
+        frameInfo.imageResolution = [
+            "width": currentFrame.camera.imageResolution.width,
+            "height": currentFrame.camera.imageResolution.height
         ]
-        
-        return jsonObject
+        frameInfo.lightEstimate = (currentFrame.lightEstimate?.ambientIntensity)!
+        let arPointCloud = ARPointCloud()
+        arPointCloud.count = (currentFrame.rawFeaturePoints?.__count) ?? 0
+        arPointCloud.points = arrayFromPointCloud(currentFrame.rawFeaturePoints)
+        frameInfo.ARPointCloud = arPointCloud
+        return frameInfo
+//        let jsonObject: [String: Any] = [
+//            "imageName": imageName,
+//            "timeStamp": currentFrame.timestamp,
+//            "cameraPos": dictFromVector3(positionFromTransform(currentFrame.camera.transform)),
+//            "cameraEulerAngle": dictFromVector3(currentFrame.camera.eulerAngles),
+//            "cameraTransform": arrayFromTransform(currentFrame.camera.transform),
+//            "cameraIntrinsics": arrayFromTransform(currentFrame.camera.intrinsics),
+//            "imageResolution": [
+//                "width": currentFrame.camera.imageResolution.width,
+//                "height": currentFrame.camera.imageResolution.height
+//            ],
+//            "lightEstimate": currentFrame.lightEstimate?.ambientIntensity,
+//            "ARPointCloud": [
+//                "count": currentFrame.rawFeaturePoints?.count,
+//                "points": arrayFromPointCloud(currentFrame.rawFeaturePoints)
+//            ]
+//        ]
+//
+//        return jsonObject
     }
-    
+    let queue = DispatchQueue(label:"frame",qos: .background)
     // MARK: - ARSessionDelegate
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         
         if recordButton!.isHighlighted {
-            currentState = RecordingState.recording
-            if recordStartTime == nil {
-                recordStartTime = getCurrentTime()
-            }
-            
-            DispatchQueue.global(qos: .userInitiated).async {
-                let jsonNode = self.currentFrameInfoToDic(currentFrame: frame)
-                self.jsonObject[jsonNode["imageName"] as! String] = jsonNode
+            let jsonNode = self.currentFrameInfoToDic(currentFrame: frame)
+            queue.async {
+                let recordStartTime = getCurrentTime()
+                var jsonObject = [String:FrameInfo]()
+
+                jsonObject[jsonNode.imageName] = jsonNode
                 let jpgImage = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 1.0)
-                try? jpgImage?.write(to: URL(fileURLWithPath: getFilePath(fileFolder: self.recordStartTime!, fileName: jsonNode["imageName"] as! String)))
-            }
-            
-        } else if previousState == RecordingState.recording {
-            print("state into not highlighted")
-            currentState = RecordingState.notRecording
-            DispatchQueue.global(qos: .userInitiated).async {
-                let valid = JSONSerialization.isValidJSONObject(self.jsonObject)
-                if valid {
-                    let json = JSON(self.jsonObject)
-                    let representation = json.rawString([.castNilToNSNull: true])
-                    let jsonFilePath = getFilePath(fileFolder: self.recordStartTime!, fileName: getCurrentTime()+".json")
-                    do {
-                        try representation?.description.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
-                        
-                    }catch {
-                            print("write json failed...")
-                    }
-                } else {
-                    print("the json object to write is not valid")
+                let path = getFilePath(fileFolder: recordStartTime, fileName: jsonNode.imageName)
+                try? jpgImage?.write(to: URL(fileURLWithPath:path ))
+
+                let data = try! JSONEncoder().encode(jsonObject)
+                let json = String(data: data, encoding: String.Encoding.utf8)!
+                let jsonFilePath = getFilePath(fileFolder: recordStartTime, fileName: getCurrentTime()+".json")
+                do {
+                    try json.write(toFile: jsonFilePath, atomically: false, encoding: String.Encoding.utf8)
+                    print("write json succeed...")
+                }catch {
+                        print("write json failed...")
                 }
-                self.jsonObject.removeAll()
-                self.recordStartTime = nil
             }
         }
-        previousState = currentState
+//        previousState = currentState
     }
     
     func session(_ session: ARSession, didFailWithError error: Error) {

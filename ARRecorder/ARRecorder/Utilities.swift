@@ -87,7 +87,7 @@ func dictFromVector3(_ vector: vector_float3) -> [String: Float] {
 func arrayFromPointCloud(_ pointCloud: ARPointCloud?) -> [[Float]] {
     var array = [[Float]]()
     if let points = pointCloud?.points {
-        for featurePoint in UnsafeBufferPointer(start: points, count: pointCloud!.count) {
+        for featurePoint in UnsafeBufferPointer(start: points, count: pointCloud!.__count) {
             array.append([featurePoint.x, featurePoint.y, featurePoint.z])
         }
     }
