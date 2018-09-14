@@ -96,13 +96,16 @@ func arrayFromPointCloud(_ pointCloud: ARPointCloud?) -> [[Float]] {
 
 // MARK: - File Name
 func getCurrentTime() -> String {
-    let date = Date()
-    let calendar = Calendar.current
-    let day = calendar.component(.day, from: date)
-    let hour = calendar.component(.hour, from: date)
-    let minutes = calendar.component(.minute, from: date)
-    let second = calendar.component(.second, from: date)
-    return String(day)+"-"+String(hour)+"-"+String(minutes)+"-"+String(second)
+//    let date = Date()
+//    let calendar = Calendar.current
+//    let day = calendar.component(.day, from: date)
+//    let hour = calendar.component(.hour, from: date)
+//    let minutes = calendar.component(.minute, from: date)
+//    let second = calendar.component(.second, from: date)
+//    return String(day)+"-"+String(hour)+"-"+String(minutes)+"-"+String(second)
+    let today = Date();
+    let sec = today.timeIntervalSince1970
+    return "\(UInt64(sec * 1000))"
 }
 
 func pixelBufferToUIImage(pixelBuffer: CVPixelBuffer) -> UIImage {
