@@ -37,10 +37,17 @@ func getDocumentsDirectory() -> String {
     return dirPath
 }
 
-func getFilePath(fileFolder folderName:String, fileName fileName: String) -> String {
-    let dirPath = getDocumentsDirectory()
-    let filePath = NSURL(fileURLWithPath: dirPath).appendingPathComponent(folderName)?.path
+func getFilePath(fileFolder folderName:String, fileName: String) -> String {
     let fileManager = FileManager.default
+    let dirPath = NSURL(fileURLWithPath: getDocumentsDirectory() ).appendingPathComponent("data")
+    if fileManager.fileExists(atPath: dirPath!.path) == false{
+        do {
+            try  fileManager.createDirectory(atPath: dirPath!.path, withIntermediateDirectories: false, attributes: nil)
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+    }
+    let filePath = dirPath?.appendingPathComponent(folderName).path
     if fileManager.fileExists(atPath: filePath!) == false{
         do {
             try  fileManager.createDirectory(atPath: filePath!, withIntermediateDirectories: false, attributes: nil)

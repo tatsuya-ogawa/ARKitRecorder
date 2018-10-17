@@ -9,6 +9,7 @@
 import UIKit
 import SceneKit
 import ARKit
+import AVFoundation
 
 class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 
@@ -26,7 +27,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
 //    var currentState = RecordingState.notRecording
 //    var previousState = RecordingState.notRecording
-    
+//    private var videoCapture: VideoCapture!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -51,6 +52,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         //register tap gesture
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(gestureRecognize:)))
         sceneView.addGestureRecognizer(tapGesture)
+        
+        
+//        videoCapture = VideoCapture(cameraType: .back(true),
+//                                    preferredSpec: nil,
+//                                    previewContainer: nil)
+//
+//        videoCapture.syncedDataBufferHandler = { [weak self] videoPixelBuffer, depthData, face in
+//            guard let self = self else { return }
+//            let videoImage = CIImage(cvPixelBuffer: videoPixelBuffer)
+//        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,9 +70,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
+        //let configuration = ARFaceTrackingConfiguration()
         configuration.isLightEstimationEnabled = true
         // Run the view's session
         sceneView.session.run(configuration)
+        
+//        guard let videoCapture = videoCapture else {return}
+//        videoCapture.startCapture()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -89,6 +105,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         init() {
         }
     }
+    struct Vector3:Codable{
+        let x:Float
+        let y:Float
+        let z:Float
+        init(_ scn:SCNVector3) {
+            self.x = scn.x
+            self.y = scn.y
+            self.z = scn.z
+        }
+        init(_ x:Float,_ y:Float,_ z:Float){
+            self.x = x
+            self.y = y
+            self.z = z
+        }
+    }
+    class CenterPosition:Codable{
+        var worldPos:Vector3!
+        var hitPos:Vector3!
+    }
     class FrameInfo:Codable{
         var imageName : String!
         var timeStamp :TimeInterval!
@@ -99,10 +134,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         var imageResolution:[String:CGFloat]!
         var lightEstimate : CGFloat!
         var ARPointCloud :ARPointCloud?
+        var centerPos:CenterPosition?
         init() {
         }
     }
-    
+    func getCentorPosition()->CenterPosition{
+        let ret = CenterPosition()
+        
+        let screenBounds = UIScreen.main.bounds
+        let centerPos = CGPoint(x:screenBounds.midX,y:screenBounds.midY)
+        let centerVec3 = SCNVector3Make(Float(centerPos.x),Float(centerPos.y),0.99)
+        let worldPos = sceneView.unprojectPoint(centerVec3)
+        ret.worldPos = Vector3(worldPos)
+        
+        let results = sceneView.hitTest(centerPos, types: [.estimatedVerticalPlane,.estimatedHorizontalPlane])
+        if let nearlest = results.first{
+            let columns = nearlest.worldTransform.columns
+            ret.hitPos = Vector3(columns.3.x,columns.3.y,columns.3.z)
+        }
+        return ret
+    }
     func currentFrameInfoToDic(currentFrame: ARFrame) -> FrameInfo {
         
         let currentTime:String = String(format:"%f", currentFrame.timestamp)
@@ -123,6 +174,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         arPointCloud.count = (currentFrame.rawFeaturePoints?.__count) ?? 0
         arPointCloud.points = arrayFromPointCloud(currentFrame.rawFeaturePoints)
         frameInfo.ARPointCloud = arPointCloud
+        
+        frameInfo.centerPos = getCentorPosition()
+        
         return frameInfo
 //        let jsonObject: [String: Any] = [
 //            "imageName": imageName,
@@ -144,10 +198,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 //
 //        return jsonObject
     }
+    
+    
+    
     let queue = DispatchQueue(label:"frame",qos: .background)
     // MARK: - ARSessionDelegate
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        
         if recordButton!.isHighlighted {
             let jsonNode = self.currentFrameInfoToDic(currentFrame: frame)
             queue.async {
@@ -155,10 +211,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 var jsonObject = [String:FrameInfo]()
 
                 jsonObject[jsonNode.imageName] = jsonNode
-                let jpgImage = UIImageJPEGRepresentation(pixelBufferToUIImage(pixelBuffer: frame.capturedImage), 1.0)
+                let jpgImage = pixelBufferToUIImage(pixelBuffer: frame.capturedImage).jpegData(compressionQuality: 1.0)
                 let path = getFilePath(fileFolder: recordStartTime, fileName: jsonNode.imageName)
                 try? jpgImage?.write(to: URL(fileURLWithPath:path ))
 
+                if let depth = frame.capturedDepthData{
+                    let depthImage = pixelBufferToUIImage(pixelBuffer: depth.depthDataMap).jpegData(compressionQuality: 1.0)
+                    try? depthImage?.write(to: URL(fileURLWithPath:path+".depth.jpg"))
+                }
+                
                 let data = try! JSONEncoder().encode(jsonObject)
                 let json = String(data: data, encoding: String.Encoding.utf8)!
                 let jsonFilePath = getFilePath(fileFolder: recordStartTime, fileName: getCurrentTime()+".json")

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8102FAF52176276200395DFC /* VideoCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8102FAF42176276200395DFC /* VideoCapture.swift */; };
 		B54F801A1F01190500A2212D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54F80191F01190500A2212D /* AppDelegate.swift */; };
 		B54F801C1F01190500A2212D /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = B54F801B1F01190500A2212D /* art.scnassets */; };
 		B54F801E1F01190500A2212D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54F801D1F01190500A2212D /* ViewController.swift */; };
@@ -18,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8102FAF2217626C800395DFC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		8102FAF42176276200395DFC /* VideoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCapture.swift; sourceTree = "<group>"; };
 		B54F80161F01190500A2212D /* ARRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54F80191F01190500A2212D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54F801B1F01190500A2212D /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -41,11 +44,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8102FAF1217626C800395DFC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8102FAF2217626C800395DFC /* AVFoundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B54F800D1F01190500A2212D = {
 			isa = PBXGroup;
 			children = (
 				B54F80181F01190500A2212D /* ARRecorder */,
 				B54F80171F01190500A2212D /* Products */,
+				8102FAF1217626C800395DFC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -69,6 +81,7 @@
 				B54F80221F01190500A2212D /* Assets.xcassets */,
 				B54F80241F01190500A2212D /* LaunchScreen.storyboard */,
 				B54F80271F01190500A2212D /* Info.plist */,
+				8102FAF42176276200395DFC /* VideoCapture.swift */,
 			);
 			path = ARRecorder;
 			sourceTree = "<group>";
@@ -105,6 +118,7 @@
 				TargetAttributes = {
 					B54F80151F01190500A2212D = {
 						CreatedOnToolsVersion = 9.0;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -146,6 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B54F80301F011B6800A2212D /* SCNVector3Extensions.swift in Sources */,
+				8102FAF52176276200395DFC /* VideoCapture.swift in Sources */,
 				B54F801E1F01190500A2212D /* ViewController.swift in Sources */,
 				B54F801A1F01190500A2212D /* AppDelegate.swift in Sources */,
 				B54F80321F011B7400A2212D /* Utilities.swift in Sources */,
@@ -220,7 +235,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -269,7 +284,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -281,12 +296,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5M67Q8ZZ53;
 				INFOPLIST_FILE = ARRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.cmu.ARRecorder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -295,12 +310,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 5M67Q8ZZ53;
 				INFOPLIST_FILE = ARRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.cmu.ARRecorder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
