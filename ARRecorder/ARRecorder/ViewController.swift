@@ -53,6 +53,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleTap(gestureRecognize:)))
         sceneView.addGestureRecognizer(tapGesture)
         
+        let tapButtonGesture = UITapGestureRecognizer(target: self, action: #selector(ViewController.handleButtonTap(gestureRecognize:)))
+        recordButton.addGestureRecognizer(tapButtonGesture)
         
 //        videoCapture = VideoCapture(cameraType: .back(true),
 //                                    preferredSpec: nil,
@@ -96,8 +98,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     @objc
     func handleTap(gestureRecognize: UITapGestureRecognizer) {
         
-        
     }
+    var recordingFlag = false
+    var recordTime = Date()
+    @objc
+    func handleButtonTap(gestureRecognize: UITapGestureRecognizer) {
+        if recordingFlag{
+            recordButton.backgroundColor = UIColor.white
+            recordingFlag = false
+        }else{
+            recordButton.backgroundColor = UIColor.red
+            recordingFlag = true
+        }
+    }
+
     
     class ARPointCloud :Codable{
         var count : Int!
@@ -199,12 +213,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
 //        return jsonObject
     }
     
-    
+    func beep(){
+        var soundId:SystemSoundID = 0
+        if let soundUrl:NSURL = NSURL(fileURLWithPath: "/System/Library/Audio/UISounds/alarm.caf") {
+            AudioServicesCreateSystemSoundID(soundUrl, &soundId)
+            AudioServicesPlaySystemSound(soundId)
+        }
+    }
     
     let queue = DispatchQueue(label:"frame",qos: .background)
     // MARK: - ARSessionDelegate
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        if recordButton!.isHighlighted {
+        if recordingFlag {
+            let current = Date()
+            let diff = current.timeIntervalSince(recordTime)
+            if diff * 100 < 100{
+                return
+            }
+            recordTime = current
+            self.beep()
             let jsonNode = self.currentFrameInfoToDic(currentFrame: frame)
             queue.async {
                 let recordStartTime = getCurrentTime()

@@ -21,7 +21,7 @@
 /* Begin PBXFileReference section */
 		8102FAF2217626C800395DFC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		8102FAF42176276200395DFC /* VideoCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoCapture.swift; sourceTree = "<group>"; };
-		B54F80161F01190500A2212D /* ARRecorder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARRecorder.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B54F80161F01190500A2212D /* ARRecorderDepth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ARRecorderDepth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54F80191F01190500A2212D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B54F801B1F01190500A2212D /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		B54F801D1F01190500A2212D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -64,7 +64,7 @@
 		B54F80171F01190500A2212D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B54F80161F01190500A2212D /* ARRecorder.app */,
+				B54F80161F01190500A2212D /* ARRecorderDepth.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,9 +89,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B54F80151F01190500A2212D /* ARRecorder */ = {
+		B54F80151F01190500A2212D /* ARRecorderDepth */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B54F802A1F01190500A2212D /* Build configuration list for PBXNativeTarget "ARRecorder" */;
+			buildConfigurationList = B54F802A1F01190500A2212D /* Build configuration list for PBXNativeTarget "ARRecorderDepth" */;
 			buildPhases = (
 				B54F80121F01190500A2212D /* Sources */,
 				B54F80131F01190500A2212D /* Frameworks */,
@@ -101,9 +101,9 @@
 			);
 			dependencies = (
 			);
-			name = ARRecorder;
+			name = ARRecorderDepth;
 			productName = ARRecorder;
-			productReference = B54F80161F01190500A2212D /* ARRecorder.app */;
+			productReference = B54F80161F01190500A2212D /* ARRecorderDepth.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -122,7 +122,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B54F80111F01190500A2212D /* Build configuration list for PBXProject "ARRecorder" */;
+			buildConfigurationList = B54F80111F01190500A2212D /* Build configuration list for PBXProject "ARRecorderDepth" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -135,7 +135,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B54F80151F01190500A2212D /* ARRecorder */,
+				B54F80151F01190500A2212D /* ARRecorderDepth */,
 			);
 		};
 /* End PBXProject section */
@@ -299,7 +299,7 @@
 				DEVELOPMENT_TEAM = 5M67Q8ZZ53;
 				INFOPLIST_FILE = ARRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.cmu.ARRecorder;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cmu.ARRecorderDepth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -313,7 +313,7 @@
 				DEVELOPMENT_TEAM = 5M67Q8ZZ53;
 				INFOPLIST_FILE = ARRecorder/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = edu.cmu.ARRecorder;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.cmu.ARRecorderDepth;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -323,7 +323,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B54F80111F01190500A2212D /* Build configuration list for PBXProject "ARRecorder" */ = {
+		B54F80111F01190500A2212D /* Build configuration list for PBXProject "ARRecorderDepth" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B54F80281F01190500A2212D /* Debug */,
@@ -332,7 +332,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B54F802A1F01190500A2212D /* Build configuration list for PBXNativeTarget "ARRecorder" */ = {
+		B54F802A1F01190500A2212D /* Build configuration list for PBXNativeTarget "ARRecorderDepth" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B54F802B1F01190500A2212D /* Debug */,

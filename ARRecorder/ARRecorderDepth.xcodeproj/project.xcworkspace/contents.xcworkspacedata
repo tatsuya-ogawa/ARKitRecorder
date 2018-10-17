@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:ARRecorder.xcodeproj">
+      location = "self:/Users/jmas/Desktop/ARKitRecorderDepth/ARRecorder/ARRecorderDepth.xcodeproj">
    </FileRef>
 </Workspace>
