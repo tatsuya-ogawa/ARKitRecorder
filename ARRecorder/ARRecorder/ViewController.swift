@@ -71,8 +71,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         super.viewWillAppear(animated)
         
         // Create a session configuration
-        let configuration = ARWorldTrackingConfiguration()
-        //let configuration = ARFaceTrackingConfiguration()
+//        let configuration = ARWorldTrackingConfiguration()
+        let configuration = ARFaceTrackingConfiguration()
         configuration.isLightEstimationEnabled = true
         // Run the view's session
         sceneView.session.run(configuration)
@@ -243,8 +243,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 try? jpgImage?.write(to: URL(fileURLWithPath:path ))
 
                 if let depth = frame.capturedDepthData{
-                    let depthImage = pixelBufferToUIImage(pixelBuffer: depth.depthDataMap).jpegData(compressionQuality: 1.0)
-                    try? depthImage?.write(to: URL(fileURLWithPath:path+".depth.jpg"))
+                    let depthImage = pixelBufferToUIImage(pixelBuffer: depth.depthDataMap).pngData()
+                    try? depthImage?.write(to: URL(fileURLWithPath:path+".depth.png"))
                 }
                 
                 let data = try! JSONEncoder().encode(jsonObject)
